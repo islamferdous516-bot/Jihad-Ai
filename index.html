@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jihad Ai</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Hind+Siliguri:wght@400;600&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0f1014;--g:#e5b85c;--p:#9d4edd;--ln:rgba(229,184,92,.28)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{height:100%;background:var(--bg)}
+body{color:#f3efe6;font:16px/1.5 "Hind Siliguri",system-ui,sans-serif;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+#app{position:fixed;inset:0 0 auto 0;height:100%;display:flex;flex-direction:column;max-width:560px;margin:auto;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);background:radial-gradient(90% 40% at 50% 0,#2a1745,transparent),var(--bg)}
+header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px}
+header button{font-size:22px;width:40px;height:40px;border-radius:50%}
+header .logo{width:auto;font-size:18px;font-weight:600;letter-spacing:.3em;color:var(--g);text-shadow:0 0 14px var(--g),0 0 30px var(--p)}
+main{flex:1;overflow-y:auto;padding-bottom:12px}
+.hero{position:relative;margin:4px 14px 0;height:210px;border-radius:26px;overflow:hidden;border:1px solid var(--ln)}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hw{position:absolute;font:600 24px Caveat,cursive;color:var(--g);text-shadow:0 2px 10px #000}
+.hw.l{left:14px;bottom:14px;transform:rotate(-4deg)}
+.hw.r{right:14px;top:14px;transform:rotate(3deg)}
+.mic{display:flex;flex-direction:column;align-items:center;justify-content:center;width:156px;height:156px;margin:22px auto 6px;border-radius:50%;font-size:44px;line-height:1.2;color:#1a1020;background:radial-gradient(circle at 35% 30%,#f6d98b,var(--g) 45%,var(--p));box-shadow:0 0 0 8px rgba(229,184,92,.12),0 0 50px 8px rgba(157,78,221,.55);animation:glow 3s ease-in-out infinite}
+.mic small{font-size:14px;font-weight:600}
+.mic.on{animation-duration:.8s;box-shadow:0 0 0 12px rgba(229,184,92,.3),0 0 70px 14px var(--g)}
+@keyframes glow{50%{transform:scale(1.04);filter:brightness(1.15)}}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px}
+.card{padding:12px 6px;border-radius:18px;text-align:center;background:rgba(255,255,255,.07);border:1px solid var(--ln);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.card i{font-size:24px;font-style:normal}
+.card b{display:block;color:var(--g)}
+.card small{display:block;font-size:11px;line-height:1.3;opacity:.75}
+#chat{padding:6px 0}
+.m{display:flex;flex-direction:column;align-items:flex-start;width:fit-content;max-width:86%;margin:10px 14px}
+.m.u{align-items:flex-end;margin-left:auto}
+.b{padding:10px 14px;border-radius:20px 20px 20px 6px;background:#2a2b33;color:#fff;overflow-wrap:anywhere}
+.u .b{background:var(--g);color:#111;border-radius:20px 20px 6px 20px}
+.ls{margin-top:2px;padding:4px 8px;font-size:13px;color:var(--g)}
+pre{margin-top:8px;padding:10px;border-radius:12px;background:#0b0b10;overflow-x:auto;font:13px/1.5 ui-monospace,monospace;color:#e8e2d0}
+.gen{display:block;width:100%;max-width:300px;margin-top:8px;border-radius:14px}
+#bar{display:flex;align-items:center;gap:8px;margin:0 14px 8px;padding:6px 6px 6px 14px;border-radius:30px;background:#191a21;border:1px solid var(--ln);box-shadow:0 8px 30px #0008}
+#bar span{color:var(--g);font-size:20px}
+#inp{flex:1;min-width:0;background:none;border:0;color:#fff;font:16px "Hind Siliguri",system-ui,sans-serif}
+#inp::placeholder{color:#8d8a99}
+#go{width:42px;height:42px;border-radius:50%;background:var(--g);color:#111;font-size:18px}
+nav{position:relative;display:flex;justify-content:space-around;margin:18px 14px 10px;padding:26px 0 8px;border-radius:28px;background:#191a21;border:1px solid var(--ln)}
+nav button{display:flex;flex-direction:column;align-items:center;padding:0 16px;font-size:12px;color:#c9c5d3}
+nav button i{font-size:20px;font-style:normal}
+#globe{position:absolute;left:50%;top:-22px;translate:-50% 0;width:48px;height:48px;padding:0;border-radius:50%;font-size:22px;background:radial-gradient(circle at 35% 30%,#f6d98b,var(--g) 50%,var(--p));box-shadow:0 0 22px 4px rgba(157,78,221,.7)}
+.kb nav{display:none}
+#toast{position:fixed;left:50%;bottom:120px;translate:-50% 0;padding:8px 16px;border-radius:20px;background:#000c;border:1px solid var(--ln);font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none}
+#toast.on{opacity:1}
+#lock{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:radial-gradient(90% 40% at 50% 0,#2a1745,transparent),var(--bg)}
+.lbox{display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px;padding:28px 22px;border-radius:26px;text-align:center;background:rgba(255,255,255,.07);border:1px solid var(--ln);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.lbox .lg{font-size:22px;font-weight:600;letter-spacing:.3em;color:var(--g);text-shadow:0 0 14px var(--g),0 0 30px var(--p)}
+#pw{padding:12px 16px;border-radius:24px;background:#191a21;border:1px solid var(--ln);color:#fff;font:16px "Hind Siliguri",system-ui,sans-serif;text-align:center}
+#lgo{padding:12px;border-radius:24px;background:var(--g);color:#111;font-weight:600}
+#lerr{min-height:1.5em;font-size:14px;color:#ff8a8a}
+.out{display:block;margin:0 auto 6px;padding:6px 14px;font-size:13px;color:#8d8a99}
+.wait{display:inline-block;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <button id="menu" aria-label="নতুন চ্যাট">☰</button>
+    <button class="logo" id="logo">JIHAD AI</button>
+    <button id="gear" aria-label="সেটিংস">⚙</button>
+  </header>
+  <main id="home">
+    <div class="hero"><img id="ph" alt="Jihad Ai"><span class="hw l">Hi, I’m JIHAD ♡</span><span class="hw r">Always Here For You ♡</span></div>
+    <button class="mic" id="mic" aria-label="Tap to Talk"><span>🎙</span><small>Tap to Talk</small></button>
+    <div class="cards">
+      <button class="card" id="c1"><i>💬</i><b>Chat</b><small>Get instant answers</small></button>
+      <button class="card" id="c2"><i>🎨</i><b>Create Image</b><small>Photos into sketches</small></button>
+      <button class="card" id="c3"><i>✍</i><b>Write</b><small>Notes, code, content</small></button>
+    </div>
+    <button class="out" id="out" hidden>বের হও</button>
+  </main>
+  <main id="chat" hidden></main>
+  <div id="bar"><span>✦</span><input id="inp" placeholder="Ask me anything..." autocomplete="off" enterkeyhint="send"><button id="go" aria-label="পাঠাও">➤</button></div>
+  <nav>
+    <button id="n1"><i>💬</i>Chat</button>
+    <button id="n2"><i>🎨</i>Image</button>
+    <button id="n3"><i>✍</i>Write</button>
+    <button id="globe" aria-label="অনুমতি">🌐</button>
+  </nav>
+  <div id="lock" hidden>
+    <div class="lbox">
+      <div class="lg">JIHAD AI</div>
+      <p>ঢুকতে পাসওয়ার্ড দাও</p>
+      <input id="pw" type="password" placeholder="পাসওয়ার্ড" autocomplete="current-password" enterkeyhint="go">
+      <button id="lgo">ঢুকো</button>
+      <p id="lerr" role="alert"></p>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+const CHARACTER_URL=''; // নিজের ছবির লিংক এখানে বসাও
+const $=s=>document.querySelector(s), chat=$('#chat'), inp=$('#inp'), mic=$('#mic');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let hist=[], lastImg=null, auto=false, rec=null, tt;
+
+$('#ph').src=CHARACTER_URL||'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260"><defs><radialGradient id="g" cx="50%" cy="35%"><stop offset="0" stop-color="#9d4edd"/><stop offset="1" stop-color="#0f1014"/></radialGradient></defs><rect width="400" height="260" fill="url(#g)"/><path d="M120 260c0-60 36-95 80-95s80 35 80 95z" fill="#e5b85c"/><circle cx="200" cy="108" r="46" fill="#f3d99a"/><path d="M152 108c0-40 24-58 52-58s46 20 44 58c-10-24-30-34-52-34s-34 12-44 34z" fill="#9d4edd"/><g fill="#e5b85c"><path d="M60 60l4 12 12 4-12 4-4 12-4-12-12-4 12-4z"/><path d="M340 170l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></g></svg>`);
+
+function art(n){const c=['#9d4edd','#e5b85c','#ff7eb6','#5ad1ff'];let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#17131f"/>';for(let i=0;i<14;i++)s+='<circle cx="'+(200+Math.cos(i+n)*(40+i*9)).toFixed(1)+'" cy="'+(200+Math.sin(i*1.3+n)*(40+i*9)).toFixed(1)+'" r="'+(10+i*2)+'" fill="none" stroke="'+c[(i+n)%4]+'" stroke-width="2" opacity=".8"/>';return 'data:image/svg+xml,'+encodeURIComponent(s+'</svg>')}
+
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200)}
+function go(v){$('#home').hidden=v==='chat';chat.hidden=v!=='chat'}
+const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const fmt=t=>t.split('```').map((p,i)=>i%2?'<pre><code>'+esc(p.replace(/^\w*\n/,''))+'</code></pre>':esc(p).replace(/\n/g,'<br>')).join('');
+
+function add(role,text){
+  const w=document.createElement('div'),b=document.createElement('div');
+  w.className='m '+(role==='ai'?'a':'u');b.className='b';b.innerHTML=fmt(text);b.dataset.raw=text;w.append(b);
+  if(role==='ai'){const l=document.createElement('button');l.className='ls';l.textContent='🔊 শুনো';l.onclick=()=>speak(b.dataset.raw);w.append(l)}
+  chat.append(w);chat.scrollTop=chat.scrollHeight;return b;
+}
+
+// ---- Voice: TTS ----
+function speak(t){
+  if(!window.speechSynthesis)return toast('এই ব্রাউজারে পড়ে শোনানো যায় না');
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t.replace(/```[\s\S]*?```/g,' '));
+  u.lang=/[\u0980-\u09FF]/.test(t)?'bn-BD':'en-US';
+  const v=speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(u.lang.slice(0,2)));
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+// ---- Voice: STT ----
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function talk(){
+  if(!SR)return toast('ভয়েস ইনপুটের জন্য Chrome ব্যবহার করো');
+  if(rec){rec.stop();return}
+  rec=new SR();rec.lang='bn-BD';rec.interimResults=false;mic.classList.add('on');
+  rec.onresult=e=>send(e.results[0][0].transcript,true);
+  rec.onerror=()=>toast('মাইক চালু করা গেল না');
+  rec.onend=()=>{rec=null;mic.classList.remove('on')};
+  rec.start();
+}
+async function perm(){
+  try{(await navigator.mediaDevices.getUserMedia({audio:true})).getTracks().forEach(t=>t.stop());toast('মাইকের অনুমতি দেওয়া আছে ✓')}
+  catch{toast('মাইকের অনুমতি পাওয়া যায়নি')}
+}
+
+// ---- Local intents: image + news ----
+function local(q){
+  if(lastImg&&/ছবি/.test(q)&&/কোথায়|সাইজ|রেজ|কত/.test(q))
+    return{t:'ছবিটা এই চ্যাটেই আছে, ওপরে দেখো। সাইজ '+lastImg.w+'×'+lastImg.h+' পিক্সেল, ফরম্যাট SVG। অ্যাপের ডেমো এআই স্কেচ জেনারেটর থেকে তোমার অনুরোধে তৈরি হয়েছে।'};
+  if(/ছবি.*(বানি|তৈরি)|(generate|create|make).*image/i.test(q)){lastImg={w:1024,h:1024};return{t:'দারুণ! তোমার জন্য একটা ছবি বানিয়ে দিলাম। কেমন লাগলো বলো তো?',img:art(Math.random()*9|0)}}
+  if(/খবর|news/i.test(q))
+    return{t:'আজকের কয়েকটা খবর শোনো (এগুলো ডেমো খবর)।\n১. দেশের বেশিরভাগ জায়গায় আজ আকাশ আংশিক মেঘলা থাকবে।\n২. সকালের দিকে শহরে যানজট তুলনায় কম ছিল।\n৩. প্রযুক্তি জগতে নতুন এআই টুল নিয়ে আলোচনা চলছে।\n৪. সন্ধ্যায় খেলাধুলার একটা বড় ম্যাচ আছে।'};
+}
+function demoReply(q){
+  if(/কোড|code/i.test(q))return'ঠিক আছে, এই নাও একটা ছোট উদাহরণ।\n```js\nfunction hello(name) {\n  return "হ্যালো, " + name + "!";\n}\n```\nচাইলে আরও বড় কিছু লিখে দেব।';
+  if(/সার্ভার|server/i.test(q))return'এখন আমি অ্যাপের নিজের ডেমো ইঞ্জিনে চলছি, কারণ ব্যাকএন্ড সার্ভার কানেক্ট নেই। ব্যাকএন্ড চালু হলে আমি কোন মডেলে চলছি সেটা সরাসরি বলে দেব।';
+  return'আমি Jihad Ai, Jihad Boos আমাকে বানিয়েছে। তুমি যা জানতে চাও বলো, আমি পাশেই আছি।';
+}
+async function typeOut(t,upd){let s='';for(const w of t.split(/(?<=\s)/)){s+=w;upd(s);await sleep(40)}}
+
+// ---- Backend: SSE stream ----
+async function stream(m,on){
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:m})});
+  if(r.status===404||r.status===405)throw 'nobackend';
+  if(r.status===401){showLogin();throw 'auth'}
+  if(!r.ok||!r.body)throw 0;
+  const rd=r.body.getReader(),dc=new TextDecoder();let buf='';
+  for(;;){
+    const{done,value}=await rd.read();if(done)return;
+    buf+=dc.decode(value,{stream:true});
+    const parts=buf.split('\n\n');buf=parts.pop();
+    for(const p of parts){
+      const d=p.replace(/^data: ?/,'');if(d==='[DONE]')return;
+      try{const j=JSON.parse(d);if(j.t)on(j.t)}catch{}
+    }
+  }
+}
+
+// ---- Waking server: wait + auto-retry ----
+const WAKE_MSG='⏳ সার্ভার জাগছে, একটু অপেক্ষা করো…';
+async function wake(tick){ // /health ঠিকঠাক সাড়া না দেওয়া পর্যন্ত অপেক্ষা (সর্বোচ্চ ৯০ সেকেন্ড)
+  const t0=Date.now();
+  while(Date.now()-t0<90000){
+    try{
+      const r=await fetch('/health',{cache:'no-store',signal:AbortSignal.timeout(8000)});
+      if(r.status===404)return'nobackend';
+      if(r.ok&&(await r.text()).trim()==='ok')return'up';
+    }catch{}
+    tick(Math.round((Date.now()-t0)/1000));
+    await sleep(2000);
+  }
+  return'timeout';
+}
+async function reply(upd,get,wait){ // ফেরত দেয়: ok | auth | demo | fail
+  if(location.protocol==='file:')return'demo';
+  for(let n=0;n<3;n++){
+    try{
+      await stream(hist,t=>upd(get()+t));
+      if(get())return'ok';
+      throw 0;
+    }catch(e){
+      if(e==='auth')return'auth';
+      if(e==='nobackend')return'demo';
+      if(get())return'ok'; // উত্তরের কিছুটা এসে গেছে
+      const w=await wake(s=>wait(WAKE_MSG+' ('+s.toLocaleString('bn-BD')+' সেকেন্ড)'));
+      if(w==='nobackend')return'demo';
+      if(w==='timeout')return'fail';
+    }
+  }
+  return'fail';
+}
+
+async function send(q,spoken){
+  q=(q||inp.value).trim();if(!q)return;inp.value='';go('chat');
+  add('user',q);hist.push({role:'user',content:q});
+  const b=add('ai','');let out='';
+  const upd=t=>{out=t;b.dataset.raw=t;b.innerHTML=fmt(t);chat.scrollTop=chat.scrollHeight};
+  const wait=t=>{b.dataset.raw='';b.innerHTML='<span class="wait">'+t+'</span>'};
+  const L=local(q);
+  if(L){
+    await typeOut(L.t,upd);
+    if(L.img){b.insertAdjacentHTML('beforeend','<img class="gen" alt="AI ছবি" src="'+L.img+'">');chat.scrollTop=chat.scrollHeight}
+  }else{
+    const slow=setTimeout(()=>{if(!out)wait(WAKE_MSG)},4000);
+    const res=await reply(upd,()=>out,wait);
+    clearTimeout(slow);
+    if(res==='auth'){hist.pop();upd('আগে পাসওয়ার্ড দিয়ে ঢুকো, তারপর আবার বলো।');return}
+    if(res==='fail'){hist.pop();upd('সার্ভার এখনো জাগেনি। কিছুক্ষণ পর মেসেজটা আবার পাঠাও।');return}
+    if(res==='demo'){upd('');await typeOut(demoReply(q),upd)}
+  }
+  hist.push({role:'assistant',content:out});
+  if(auto||spoken)speak(out);
+}
+
+// ---- Wiring ----
+const write=()=>{go('chat');inp.placeholder='কী লিখবো? বলো…';inp.focus()};
+const image=()=>send('আমার জন্য একটি আর্টিফিশিয়াল ছবি বানিয়ে দাও');
+mic.onclick=talk;$('#go').onclick=()=>send();
+inp.onkeydown=e=>{if(e.key==='Enter')send()};
+$('#c1').onclick=$('#n1').onclick=()=>{go('chat');inp.focus()};
+$('#c2').onclick=$('#n2').onclick=image;
+$('#c3').onclick=$('#n3').onclick=write;
+$('#globe').onclick=perm;
+$('#logo').onclick=()=>go('home');
+$('#menu').onclick=()=>{hist=[];lastImg=null;chat.innerHTML='';go('home');toast('নতুন চ্যাট শুরু')};
+$('#gear').onclick=()=>{auto=!auto;toast(auto?'এখন থেকে উত্তর নিজে পড়ে শোনাবো':'এখন থেকে শুধু শুনো চাপলে পড়বো')};
+
+// ---- Password login ----
+const lock=$('#lock'),pw=$('#pw'),lerr=$('#lerr');
+function showLogin(){$('#out').hidden=true;lock.hidden=false;pw.value='';lerr.textContent='';setTimeout(()=>pw.focus(),50)}
+async function login(){
+  lerr.textContent='';
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw.value})});
+    if(r.ok){lock.hidden=true;pw.value='';$('#out').hidden=false}
+    else lerr.textContent=r.status===429?'অনেকবার ভুল হয়েছে, ১৫ মিনিট পর আবার চেষ্টা করো':r.status===503?'সার্ভারে APP_PASSWORD সেট করা নেই':'পাসওয়ার্ড ঠিক নয়';
+  }catch{lerr.textContent='সার্ভারে যাওয়া যাচ্ছে না, ইন্টারনেট দেখো'}
+}
+async function boot(){
+  if(location.protocol==='file:')return; // ব্যাকএন্ড নেই: ডেমো মোড, লগইন লাগবে না
+  for(let i=0;i<20;i++){
+    try{
+      const r=await fetch('/api/me',{signal:AbortSignal.timeout(8000)});
+      if(r.status===401)return showLogin();
+      if(r.ok){$('#out').hidden=false;return}
+      if(r.status===404||r.status===405)return; // স্ট্যাটিক হোস্টিং: ডেমো মোড
+    }catch{}
+    if(i===1)toast('সার্ভার জাগছে, একটু অপেক্ষা করো…');
+    await sleep(3000);
+  }
+}
+$('#lgo').onclick=login;
+pw.onkeydown=e=>{if(e.key==='Enter')login()};
+$('#out').onclick=async()=>{try{await fetch('/api/logout',{method:'POST'})}catch{}showLogin()};
+
+// ---- Keyboard fix ----
+const vv=window.visualViewport;
+function fit(){
+  const a=$('#app');
+  a.style.height=(vv?vv.height:innerHeight)+'px';
+  a.style.top=(vv?vv.offsetTop:0)+'px';
+  document.body.classList.toggle('kb',!!vv&&vv.height<innerHeight*.75);
+  if(chat.hidden===false)chat.scrollTop=chat.scrollHeight;
+}
+if(vv){vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit)}
+fit();
+boot();
+</script>
+</body>
+</html>
